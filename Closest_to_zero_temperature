@@ -1,0 +1,165 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+
+ int arrayMin(int *arr, int size)
+{
+	int min = arr[0];
+	for (int i = 1; i < size; i++)
+	{
+		if (arr[i] < min)
+		{
+			min = arr[i];
+		}
+	}
+	return min;
+}
+int arrayMax(int* arr, int size)
+{
+	int max = arr[0];
+	for (int i = 1; i < size; i++)
+	{
+		if (arr[i] > max)
+		{
+			max = arr[i];
+		}
+	}
+	return max;
+}
+
+int main()
+{ 
+    int size; // the number of temperatures to analyse
+    cin >> size; cin.ignore();
+    int array[size];
+    for (int i = 0; i < size; i++) 
+    {
+     // a temperature expressed as an integer ranging from -273 to 5526
+        cin >> array[i]; cin.ignore();
+    }
+    int positive = 0;
+	  int negative = 0;
+    for (int i = 0; i < size; i++)
+	  {
+		  if (array[i] >= 0)
+		  {
+			positive++;
+		  }
+		  else
+		  {
+			negative++;
+		  }
+	  }
+
+    if (positive == 0 && negative>0) 
+	  {
+		 int* arrayNeg = new int[negative];
+		 for (int j = 0; j < negative; j++)
+	   {
+		  for (int i = 0; i < size; i++)
+		  {
+			  if (array[i] < 0)
+			 {
+				arrayNeg[j] = array[i];
+				j++;
+			 }
+		  }
+	   }
+
+		int maxN = arrayMax(arrayNeg, negative);
+		cout << maxN << endl;
+		
+		delete[] arrayNeg;
+		arrayNeg = nullptr;
+	}
+	else if (negative == 0 && positive>0)
+	{
+		int* arrayPos = new int[positive];
+		for (int j = 0; j < positive; j++)
+	    {
+		  for (int i = 0; i < size; i++)
+		  {
+			if (array[i] >= 0)
+			{
+				arrayPos[j] = array[i];
+				j++;
+			}
+			
+		  }
+	 }
+
+		int minP = arrayMin(arrayPos, positive);
+		cout << minP << endl;
+		delete[] arrayPos;
+		arrayPos = nullptr;
+		
+	}
+	else
+	{
+
+		int* arrayPos = new int[positive];
+		int* arrayNeg = new int[negative];
+		for (int j = 0; j < negative; j++)
+		{
+			for (int i = 0; i < size; i++)
+			{
+				if (array[i] < 0)
+				{
+					arrayNeg[j] = array[i];
+					j++;
+				}
+
+			}
+		}
+		for (int j = 0; j < positive; j++)
+		{
+			for (int i = 0; i < size; i++)
+			{
+				if (array[i] >= 0)
+				{
+					arrayPos[j] = array[i];
+					j++;
+				}
+
+			}
+		}
+		
+		int minP = arrayMin(arrayPos, positive);
+		int maxN = arrayMax(arrayNeg, negative);
+		if (abs(maxN) < minP)
+		{
+			cout << maxN << endl;
+		}
+		else if (abs(maxN) > minP)
+		{
+			cout << minP << endl;
+		}
+		else if (abs(maxN) == minP)
+		{
+			cout << minP << endl;
+		}
+		else if (minP == 0)
+			cout << minP << endl;
+		else
+		{
+			cout << "Another unexpected case." << endl;
+		}
+
+
+
+		delete[] arrayPos;
+		delete[] arrayNeg;
+		arrayPos = nullptr;
+		arrayNeg = nullptr;
+
+
+
+	}
+
+	
+	return 0;
+}
